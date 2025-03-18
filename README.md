@@ -1,1 +1,1 @@
-"# Inverse_Kinematics_GD" 
+# Solving Inverse Kinematics using Gradient Descent
