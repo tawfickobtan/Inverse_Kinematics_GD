@@ -1,5 +1,5 @@
 # Solving Inverse Kinematics using Gradient Descent (Playground) 🤖
-### This `README.md` file is AI-generated but fact check by me 😁
+### This `README.md` file is AI-generated but fact checked by me 😁
 
 Welcome to the **Solving Inverse Kinematics using Gradient Descent (Playground)** repository! This project is a playful experiment in simulating a robotic arm with inverse kinematics using Pygame, Python, and gradient descent. Watch as the arm continuously adjusts its joints to follow your mouse cursor, all while exploring the fundamentals of robotics and optimization! 🖱️✨
 
