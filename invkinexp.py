@@ -8,7 +8,8 @@ pygame.init()
 
 screen = pygame.display.set_mode((1440, 960))
 
-pygame.display.set_caption("My Pygame Window")
+pygame.display.set_caption("Playing Around with Inverse Kinematics")
+pygame.display.set_icon(pygame.image.load("icon.png"))
 
 def renderarm(canvas, positions):
     for i in range(1,len(positions)):
@@ -34,7 +35,7 @@ def dloss(prop, act):
 alpha = 0.00001
 def update(angles, dangles):
     for i in range(len(angles)):
-        angles[i] -= alpha * dangles[i] + random.uniform(-0.001, 0.001) # so it favors bending clockwise i think
+        angles[i] -= alpha * dangles[i] - random.uniform(-0.001, 0.01) # so it favors bending clockwise i think
 
 def getdangles(dloss, angles):
     dangles = []
@@ -46,16 +47,21 @@ def getdangles(dloss, angles):
 
 angles = [random.uniform(0, 3.14)for i in range(joints)]
 clock = pygame.time.Clock()
-
+font = pygame.font.Font(None, 36)
 running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:  # Check for close event
             running = False
     screen.fill((30, 30, 30))
-    
+
     positions = anglestopositions(angles)
     renderarm(screen, positions)
+
+    intpositions = [[int(x), int(y)] for x,y in positions]
+    text_surface = font.render(f"Joint positions are {intpositions}", True, (255, 255, 255))
+    screen.blit(text_surface, (100, 100))
+
     pygame.display.flip()
 
     x, y = pygame.mouse.get_pos()
