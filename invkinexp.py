@@ -4,6 +4,7 @@ import random
 
 joints = int(input("how many joints: "))
 length = int(input("Length of segment (in pixels): "))
+mode = input("Mode (Mouse-Tracking (M) / Arrow Keys (A)): ")
 pygame.init()
 
 screen = pygame.display.set_mode((1440, 960))
@@ -35,7 +36,7 @@ def dloss(prop, act):
 alpha = 0.00001
 def update(angles, dangles):
     for i in range(len(angles)):
-        angles[i] -= alpha * dangles[i] - random.uniform(-0.001, 0.01) # so it favors bending clockwise i think
+        angles[i] -= alpha * dangles[i] - random.uniform(-0.001, 0.001) # so it favors bending clockwise i think
 
 def getdangles(dloss, angles):
     dangles = []
@@ -49,11 +50,19 @@ angles = [random.uniform(0, 3.14)for i in range(joints)]
 clock = pygame.time.Clock()
 font = pygame.font.Font(None, 36)
 running = True
+curx = 720
+cury = 480
+x,y = 720, 480
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:  # Check for close event
             running = False
     screen.fill((30, 30, 30))
+    
+    if mode == "M":
+        pygame.draw.circle(screen, (255, 255, 255), (x, y), length / 8, 0)
+    else:
+        pygame.draw.circle(screen, (255, 255, 255), (curx, cury), length / 8, 0)
 
     positions = anglestopositions(angles)
     renderarm(screen, positions)
@@ -65,7 +74,20 @@ while running:
     pygame.display.flip()
 
     x, y = pygame.mouse.get_pos()
-    update(angles, getdangles(dloss(positions[-1], [x, y]), angles))
+
+    if mode == "M":
+        update(angles, getdangles(dloss(positions[-1], [x, y]), angles))
+    else:
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                cury -= 10
+            elif event.key == pygame.K_DOWN:
+                cury += 10
+            if event.key == pygame.K_LEFT:
+                curx -= 10
+            elif event.key == pygame.K_RIGHT:
+                curx += 10
+        update(angles, getdangles(dloss(positions[-1], [curx, cury]), angles))
     
     clock.tick(60)
 # Quit Pygame
